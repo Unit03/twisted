@@ -17,9 +17,13 @@ from twisted.internet import protocol
 from twisted.python import log, filepath
 from twisted.web import resource, server, static
 
+# t.spread.pb.Viewable is a subclass to CGIProcessProtocol but t.spread.pb is
+# not ported to Python 3.x yet. We'll just try to import it anyway and:
+# - in Python 2.x it should just work
+# - in 3.x, SyntaxError will be raised so we'll assign `object` to it;
+#   CGIProcessProtocol won't be Viewable.
 try:
     # FIXME: trac_url
-    # Explain why we need this.
     from twisted.spread.pb import Viewable
 except SyntaxError:
     Viewable = object
